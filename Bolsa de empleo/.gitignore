@@ -1,0 +1,41 @@
+
+#.gitignore - Proyecto Bolsa de Empleo
+
+#Entornos virtuales de Python
+venv/
+env/
+
+#Archivos de base de datos
+*.sqlite3
+*.db
+
+#Archivos compilados o temporales de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+#Configuración local de editores
+.vscode/
+.idea/
+
+#Variables de entorno o claves secretas
+.env
+
+#Archivos del sistema (Windows / Mac)
+.DS_Store
+Thumbs.db
+desktop.ini
+
+#Archivos de registro (logs)
+*.log
+
+#Archivos comprimidos o copias de respaldo
+*.zip
+*.rar
+*.tar
+*.gz
+*.bak
+
+#Archivos temporales o de caché
+*.cache
