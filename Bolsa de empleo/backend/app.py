@@ -1,3 +1,6 @@
+import sqlite3
+import hashlib
+import uuid
 from flask import Flask, request, jsonify, redirect
 from flask_cors import CORS
 from database import get_conn, init_db
@@ -8,82 +11,138 @@ CORS(app)
 # Inicializar base de datos
 init_db()
 
-@app.route("/api/health", methods=["GET"])
+# Helper para hashear password
+def hash_password(pw: str) -> str:
+    return hashlib.sha256(pw.encode()).hexdigest()
+
+# Helper para encontrar usuario por token
+def get_user_by_token(token):
+    if not token:
+        return None
+    db = get_conn()
+    user = db.execute("SELECT * FROM usuarios WHERE token=?", (token,)).fetchone()
+    db.close()
+    return user
+
+@app.route("/")
+def index():
+    return redirect("/api/health")
+
+@app.route("/api/health")
 def health():
     return jsonify({"status": "OK", "message": "Servidor funcionando ✅"}), 200
 
+# ------------------------
+# AUTH
+# ------------------------
 
-@app.route("/api/ofertas", methods=["GET"])
-def obtener_ofertas():
-    conn = get_conn()
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM ofertas")
-    ofertas = cur.fetchall()
-    conn.close()
+@app.route("/api/register", methods=["POST"])
+def register():
+    data = request.json or {}
+    nombre = data.get("nombre")
+    email = data.get("email")
+    password = data.get("password")
 
-    return jsonify([dict(o) for o in ofertas]), 200
+    if not (nombre and email and password):
+        return jsonify({"error": "Faltan datos"}), 400
+
+    pw_hash = hash_password(password)
+    token = str(uuid.uuid4())
+
+    db = get_conn()
+    try:
+        db.execute("INSERT INTO usuarios (nombre, email, password_hash, token) VALUES (?,?,?,?)",
+                    (nombre, email, pw_hash, token))
+        db.commit()
+        return jsonify({"message": "Registrado ✅", "token": token, "nombre": nombre}), 201
+    except sqlite3.IntegrityError:
+        return jsonify({"error": "Email ya registrado"}), 409
+    finally:
+        db.close()
+
+@app.route("/api/login", methods=["POST"])
+def login():
+    data = request.json or {}
+    email = data.get("email")
+    password = data.get("password")
+
+    if not (email and password):
+        return jsonify({"error": "Faltan datos"}), 400
+
+    pw_hash = hash_password(password)
+
+    db = get_conn()
+    user = db.execute("SELECT id,nombre,token,password_hash FROM usuarios WHERE email=?", (email,)).fetchone()
+    db.close()
+
+    if not user or user["password_hash"] != pw_hash:
+        return jsonify({"error": "Credenciales inválidas"}), 401
+
+    return jsonify({"token": user["token"], "nombre": user["nombre"]}), 200
+
+@app.route("/api/logout", methods=["POST"])
+def logout():
+    token = request.headers.get("Authorization", "").replace("Token ", "")
+    user = get_user_by_token(token)
+    if not user:
+        return jsonify({"error": "No autorizado"}), 401
+
+    db = get_conn()
+    new_token = str(uuid.uuid4())
+    db.execute("UPDATE usuarios SET token=? WHERE id=?", (new_token, user["id"]))
+    db.commit()
+    db.close()
+
+    return jsonify({"message": "Sesión cerrada ✅"}), 200
 
 
-@app.route("/api/ofertas", methods=["POST"])
-def crear_oferta():
-    data = request.json
-    empresa = data.get("empresa")
-    titulo = data.get("titulo")
-    contacto = data.get("contacto")
+# ------------------------
+# OFERTAS
+# ------------------------
 
-    if not empresa or not titulo or not contacto:
-        return jsonify({"error": "Todos los campos son obligatorios"}), 400
-
-    conn = get_conn()
-    cur = conn.cursor()
-    cur.execute("""
-        INSERT INTO ofertas (empresa, titulo, contacto)
-        VALUES (?, ?, ?)
-    """, (empresa, titulo, contacto))
-    conn.commit()
-    conn.close()
-
-    return jsonify({"message": "Oferta creada correctamente ✅"}), 201
-
-@app.route("/", methods=["GET"])
-def index():
-    # Redirige la raíz a la ruta de salud de la API
-    return redirect("/api/health")
-
-@app.route("/ofertas", methods=["GET", "POST"])
+@app.route("/api/ofertas", methods=["GET", "POST"])
 def ofertas():
-    conn = get_conn()
-    cur = conn.cursor()
+    db = get_conn()
 
-    if request.method == "POST":
-        data = request.json
-        titulo = data.get("titulo")
-        empresa = data.get("empresa")
-        contacto = data.get("contacto")
+    # GET → Listar ofertas
+    if request.method == "GET":
+        rows = db.execute(
+            "SELECT id,titulo,empresa,contacto,salario,descripcion,creado_en,publicado_por "
+            "FROM ofertas ORDER BY id DESC"
+        ).fetchall()
+        ofertas = [dict(r) for r in rows]
+        db.close()
+        return jsonify(ofertas), 200
 
-        cur.execute(
-            "INSERT INTO ofertas (titulo, empresa, contacto) VALUES (?, ?, ?)",
-            (titulo, empresa, contacto)
-        )
-        conn.commit()
+    # POST → Crear oferta (requiere token)
+    token = request.headers.get("Authorization", "").replace("Token ", "")
+    user = get_user_by_token(token)
+    if not user:
+        return jsonify({"error": "No autorizado"}), 401
 
-        return jsonify({"mensaje": "Oferta registrada correctamente"}), 201
+    data = request.json or {}
+    titulo = data.get("titulo")
+    empresa = data.get("empresa")
+    contacto = data.get("contacto")
+    salario = data.get("salario")
+    descripcion = data.get("descripcion", "")
 
-    # Si es GET, devolver todas las ofertas
-    cur.execute("SELECT * FROM ofertas")
-    rows = cur.fetchall()
+    if not (titulo and empresa and contacto):
+        return jsonify({"error": "Campos obligatorios: título, empresa, contacto"}), 400
 
-    ofertas_list = []
-    for row in rows:
-        ofertas_list.append({
-            "id": row["id"],
-            "titulo": row["titulo"],
-            "empresa": row["empresa"],
-            "contacto": row["contacto"]
-        })
+    db.execute(
+        "INSERT INTO ofertas (titulo, empresa, contacto, salario, descripcion, publicado_por) "
+        "VALUES (?,?,?,?,?,?)",
+        (titulo, empresa, contacto, salario, descripcion, user["id"])
+    )
+    db.commit()
+    db.close()
 
-    return jsonify(ofertas_list)
+    return jsonify({"message": "Oferta creada ✅"}), 201
 
 
+# ------------------------
+# MAIN
+# ------------------------
 if __name__ == "__main__":
     app.run(debug=True)
