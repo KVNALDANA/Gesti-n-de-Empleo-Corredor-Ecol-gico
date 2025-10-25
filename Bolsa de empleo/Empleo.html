@@ -1,43 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bolsa de Empleo</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bolsa de Empleo - Corredor Ecológico</title>
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
-
 <body>
-  <!-- Título principal -->
-  <h1>Bolsa de Empleo - Corredor Ecológico</h1>
-  <p>Encuentra trabajo o publica tus ofertas laborales.</p>
+  <header class="site-header">
+    <h1>Bolsa de Empleo — Corredor Ecológico</h1>
+    <p class="subtitle">Aplicación para reducir el desempleo en el corredor ecológico mediante promoción de oportunidades laborales locales.</p>
 
-  <!-- Formulario para publicar empleo -->
-  <h2>Publicar Oferta</h2>
-  <form>
-    <label for="empresa">Empresa:</label><br>
-    <input type="text" id="empresa" placeholder="Nombre de la empresa" required><br><br>
+    <!-- Zona de usuario / login -->
+    <div id="user-area" class="user-area">
+      <!-- aquí se inyecta: login/registro o nombre + logout -->
+    </div>
+  </header>
 
-    <label for="cargo">Cargo:</label><br>
-    <input type="text" id="cargo" placeholder="Ejemplo: Jardinero" required><br><br>
+  <main class="container">
+    <section id="auth-panel" class="panel">
+      <div class="auth-grid">
+        <!-- FORM Registro -->
+        <div>
+          <h3>Registro</h3>
+          <form id="registerForm" class="form">
+            <input id="r_nombre" placeholder="Nombre" required />
+            <input id="r_email" placeholder="Email" type="email" required />
+            <input id="r_password" placeholder="Contraseña" type="password" required />
+            <button type="submit" class="btn">Registrarse</button>
+          </form>
+        </div>
 
-    <label for="contacto">Contacto:</label><br>
-    <input type="email" id="contacto" placeholder="correo@ejemplo.com" required><br><br>
+        <!-- FORM Login -->
+        <div>
+          <h3>Login</h3>
+          <form id="loginForm" class="form">
+            <input id="l_email" placeholder="Email" type="email" required />
+            <input id="l_password" placeholder="Contraseña" type="password" required />
+            <button type="submit" class="btn">Iniciar sesión</button>
+          </form>
+        </div>
+      </div>
+    </section>
 
-    <button type="submit">Registrar Oferta</button>
-  </form>
+    <section id="publish-panel" class="panel" style="display:none;">
+      <h2>Publicar oferta</h2>
+      <form id="publicarForm" class="form">
+        <label for="titulo">Título</label>
+        <input id="titulo" name="titulo" required />
 
-  <!-- Sección donde se muestran las ofertas -->
-  <h2>Ofertas Disponibles</h2>
-  <div>
-    <h3>Conductor</h3>
-    <p>Empresa: TransEco</p>
-    <p>Salario: $1.700.000</p>
-  </div>
+        <label for="empresa">Empresa</label>
+        <input id="empresa" name="empresa" required />
 
-  <div>
-    <h3>Auxiliar de Bodega</h3>
-    <p>Empresa: EcoVerde</p>
-    <p>Salario: $1.456.00</p>
-  </div>
+        <label for="contacto">Contacto (email)</label>
+        <input id="contacto" name="contacto" type="email" required />
+
+        <label for="salario">Salario</label>
+        <input id="salario" name="salario" />
+
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion" rows="4"></textarea>
+
+        <button type="submit" class="btn">Registrar oferta</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Ofertas disponibles</h2>
+      <div id="lista-ofertas" class="lista-ofertas"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Proyecto académico — Corredor Ecológico</p>
+  </footer>
+
+  <script src="js/main.js"></script>
 </body>
+
 </html>
