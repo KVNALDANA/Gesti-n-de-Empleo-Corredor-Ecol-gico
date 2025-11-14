@@ -230,6 +230,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("panel-usuarios").style.display = "block";
     listarUsuarios();
   }
+
+  if (nombreUsuario === "KVNALDANA" || nombreUsuario === "Admin") {
+    document.getElementById("panel-usuarios").style.display = "block";
+    listarUsuarios();
+  }
+  
 });
 
 let index = 0;
