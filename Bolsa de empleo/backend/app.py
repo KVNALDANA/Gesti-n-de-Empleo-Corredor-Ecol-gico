@@ -95,6 +95,15 @@ def logout():
 
     return jsonify({"message": "Sesión cerrada ✅"}), 200
 
+@app.route("/api/usuarios", methods=["GET"])
+def listar_usuarios():
+    db = get_conn()
+    rows = db.execute("SELECT id, nombre, email FROM usuarios").fetchall()
+    usuarios = [dict(r) for r in rows]
+    db.close()
+    return jsonify(usuarios), 200
+
+
 
 # ------------------------
 # OFERTAS

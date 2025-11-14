@@ -6,21 +6,50 @@
   <title>Bolsa de Empleo - Corredor Ecológico</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body>
-  <header class="site-header">
-    <h1>Bolsa de Empleo — Corredor Ecológico</h1>
-    <p class="subtitle">Aplicación para reducir el desempleo en el corredor ecológico mediante promoción de oportunidades laborales locales.</p>
 
-    <!-- Zona de usuario / login -->
-    <div id="user-area" class="user-area">
-      <!-- aquí se inyecta: login/registro o nombre + logout -->
+<body>
+<header class="site-header">
+
+  <h1>Bolsa de Empleo — Corredor Ecológico</h1>
+  <p class="subtitle">Aplicación para reducir el desempleo en el corredor ecológico mediante promoción de oportunidades laborales locales.</p>
+
+  <!-- SLIDER -->
+  <div class="slider">
+    <div class="slides">
+
+      <!-- Imagen 1 -->
+      <div class="slide">
+        <img src="img/corredor1.jpg" alt="Corredor ecológico Villavicencio 1" />
+      </div>
+
+      <!-- Imagen 2 -->
+      <div class="slide">
+        <img src="img/corredor2.jpg" alt="Corredor ecológico Villavicencio 2" />
+      </div>
+
+      <!-- Imagen 3 -->
+      <div class="slide">
+        <img src="img/corredor3.jpg" alt="Corredor ecológico Villavicencio 3" />
+      </div>
+
     </div>
-  </header>
+
+    <!-- Botones -->
+    <button class="prev">&#10094;</button>
+    <button class="next">&#10095;</button>
+  </div>
+
+  <div id="user-area" class="user-area"></div>
+</header>
+
 
   <main class="container">
+
+    <!-- Panel de autenticación -->
     <section id="auth-panel" class="panel">
       <div class="auth-grid">
-        <!-- FORM Registro -->
+
+        <!-- Registro -->
         <div>
           <h3>Registro</h3>
           <form id="registerForm" class="form">
@@ -31,7 +60,7 @@
           </form>
         </div>
 
-        <!-- FORM Login -->
+        <!-- Login -->
         <div>
           <h3>Login</h3>
           <form id="loginForm" class="form">
@@ -40,12 +69,16 @@
             <button type="submit" class="btn">Iniciar sesión</button>
           </form>
         </div>
+
       </div>
     </section>
 
+    <!-- Panel de publicación -->
     <section id="publish-panel" class="panel" style="display:none;">
       <h2>Publicar oferta</h2>
+
       <form id="publicarForm" class="form">
+
         <label for="titulo">Título</label>
         <input id="titulo" name="titulo" required />
 
@@ -65,11 +98,19 @@
       </form>
     </section>
 
+    <!-- Ofertas -->
     <section class="panel">
       <h2>Ofertas disponibles</h2>
       <div id="lista-ofertas" class="lista-ofertas"></div>
     </section>
+
   </main>
+
+  <!-- Lista de usuarios -->
+  <section id="panel-usuarios" class="panel" style="display:none;">
+    <h2>Usuarios registrados</h2>
+    <div id="lista-usuarios"></div>
+  </section>
 
   <footer class="site-footer">
     <p>Proyecto académico — Corredor Ecológico</p>
@@ -77,5 +118,4 @@
 
   <script src="js/main.js"></script>
 </body>
-
 </html>

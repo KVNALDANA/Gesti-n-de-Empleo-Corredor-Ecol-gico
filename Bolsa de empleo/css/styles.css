@@ -96,3 +96,64 @@ body{
     .auth-grid{flex-direction:column} 
 }
 
+.usuario {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: #f9f9f9;
+}
+
+/* SLIDER */
+.slider {
+    position: relative;
+    width: 100%;
+    height: auto; /* importante */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #f0f0f0; /* fondo gris claro para espacios vacíos */
+    padding: 10px 0; /* espacio arriba y abajo */
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.slide img {
+    width: auto;      /* tamaño real */
+    height: auto;     /* tamaño real */
+    max-width: 100%;  /* evita desbordar horizontalmente */
+    max-height: 450px; /* límite recomendado para no romper tu diseño */
+    object-fit: contain;
+    background-color: transparent;
+}
+
+/* BOTONES */
+.slider button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.7);
+    border: none;
+    padding: 10px 14px;
+    font-size: 22px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.slider button:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+button.prev { left: 10px; }
+button.next { right: 10px; }

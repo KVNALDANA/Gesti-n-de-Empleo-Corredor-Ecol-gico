@@ -200,3 +200,49 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
+async function listarUsuarios() {
+  try {
+    const res = await fetch(`${API}/usuarios`);
+    const data = await res.json();
+    const cont = document.getElementById("lista-usuarios");
+    cont.innerHTML = "";
+
+    data.forEach(u => {
+      const div = document.createElement("div");
+      div.className = "usuario";
+      div.innerHTML = `
+        <p><strong>Nombre:</strong> ${u.nombre}</p>
+        <p><strong>Email:</strong> ${u.email}</p>
+        <hr>
+      `;
+      cont.appendChild(div);
+    });
+  } catch (err) {
+    console.error("Error al cargar usuarios:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const nombreUsuario = localStorage.getItem("nombre");
+
+  if (nombreUsuario === "Brahian Novoa" || nombreUsuario === "Admin") {
+    document.getElementById("panel-usuarios").style.display = "block";
+    listarUsuarios();
+  }
+});
+
+let index = 0;
+
+function moverSlider(n) {
+  const slides = document.querySelector(".slides");
+  const total = document.querySelectorAll(".slide").length;
+
+  index = (index + n + total) % total;
+  slides.style.transform = `translateX(-${index * 100}%)`;
+}
+
+document.querySelector(".next").addEventListener("click", () => moverSlider(1));
+document.querySelector(".prev").addEventListener("click", () => moverSlider(-1));
+
+setInterval(() => moverSlider(1), 4000);
