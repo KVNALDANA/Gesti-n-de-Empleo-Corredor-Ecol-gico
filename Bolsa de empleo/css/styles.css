@@ -1,159 +1,212 @@
 /* css/styles.css - estilos básicos */
 :root{
-    --bg:#f7f7f9;
-    --card:#ffffff;
-    --accent:#2b8a78;
-    --text:#222
+    --bg: #f4faf8;              /* Fondo suave ecológico */
+    --card: #ffffff;
+    --accent: #0096c7;          /* Turquesa profundo */
+    --accent-light: #00b4d8;    /* Turquesa claro */
+    --text: #1a1a1a;
+    --header-bg: #52b7f9;       /* Azul profundo para resaltar logo */
+    --gold: #ffb703;            /* Amarillo cálido */
 }
 
 *{
-    box-sizing:border-box
+    box-sizing:border-box;
 }
 
 body{
-    font-family:system-ui,
-    -apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
     margin:0;
     background:var(--bg);
-    color:var(--text)
+    color:var(--text);
 }
 
+/* -----------------------------------------
+   HEADER - ahora SÍ usa el color mejorado
+------------------------------------------ */
 .site-header{
-    background:var(--accent);
+    background:var(--header-bg);   /* CAMBIADO */
     color:#fff;
-    padding:20px;
-    text-align:center
+    padding:30px;
+    text-align:center;
+    border-bottom: 4px solid var(--gold); /* detalle elegante */
 }
 
 .site-header .subtitle{
     opacity:0.9;
-    margin-top:6px
+    margin-top:6px;
 }
 
+/* -----------------------------------------
+   CONTENEDORES Y TARJETAS
+------------------------------------------ */
 .container{
     max-width:920px;
     margin:28px auto;
-    padding:0 16px}
+    padding:0 16px;
+}
 
-.panel{background:var(--card);
+.panel{
+    background:var(--card);
     padding:18px;
     border-radius:8px;
     box-shadow:0 1px 4px rgba(0,0,0,0.06);
-    margin-bottom:18px
+    margin-bottom:18px;
 }
 
-.form input,.form textarea{
+/* -----------------------------------------
+   FORMULARIOS
+------------------------------------------ */
+.form input,
+.form textarea{
     width:100%;
     padding:8px;
     margin:6px 0 12px;
     border:1px solid #ddd;
-    border-radius:4px
+    border-radius:4px;
 }
 
+/* -----------------------------------------
+   BOTONES
+------------------------------------------ */
 .btn{
     background:var(--accent);
     color:#fff;
     padding:10px 14px;
     border:none;
     border-radius:6px;
-    cursor:pointer
+    cursor:pointer;
+    transition: 0.25s ease;
 }
 
-.lista-ofertas .oferta{
-    padding:10px;
-    border-bottom:1px solid #eee
-}
-
-.lista-ofertas .oferta h3{
-    margin:0 0 6px
-}
-
-.site-footer{
-    text-align:center;
-    padding:12px;
-    color:#666
-}
-
-.user-area{
-    position:absolute;
-    right:18px;
-    top:18px;
-    color:#fff
+.btn:hover{
+    background:var(--accent-light);
 }
 
 .btn.small{
     padding:6px 10px;
     font-size:0.9rem;
-    border-radius:6px
 }
 
+/* -----------------------------------------
+   LISTA DE OFERTAS
+------------------------------------------ */
+.lista-ofertas .oferta{
+    padding:10px;
+    border-bottom:1px solid #eee;
+}
+
+.lista-ofertas .oferta h3{
+    margin:0 0 6px;
+}
+
+/* -----------------------------------------
+   FOOTER
+------------------------------------------ */
+.site-footer{
+    text-align:center;
+    padding:12px;
+    color:#666;
+}
+
+/* -----------------------------------------
+   USER AREA
+------------------------------------------ */
+.user-area{
+    position:absolute;
+    right:18px;
+    top:18px;
+    color:#fff;
+}
+
+/* -----------------------------------------
+   GRID LOGIN / REGISTRO
+------------------------------------------ */
 .auth-grid{
     display:flex;
-    gap:18px
+    gap:18px;
 }
 
 @media(max-width:720px){
-    .auth-grid{flex-direction:column} 
+    .auth-grid{
+        flex-direction:column;
+    }
 }
 
-.usuario {
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  background: #f9f9f9;
+/* -----------------------------------------
+   TARJETA USUARIO
+------------------------------------------ */
+.usuario{
+    border:1px solid #ccc;
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:8px;
+    background:#f9f9f9;
 }
 
-/* SLIDER */
-.slider {
-    position: relative;
-    width: 100%;
-    height: auto; /* importante */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    background-color: #f0f0f0; /* fondo gris claro para espacios vacíos */
-    padding: 10px 0; /* espacio arriba y abajo */
+/* -----------------------------------------
+   SLIDER
+------------------------------------------ */
+.slider{
+    position:relative;
+    width:100%;
+    height:auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background-color:#edf7f5; /* verde grisáceo suave */
+    padding:10px 0;
 }
 
-.slides {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
+.slides{
+    display:flex;
+    transition:transform 0.5s ease-in-out;
 }
 
-.slide {
-    min-width: 100%;
-    display: flex;
-    justify-content: center;
+.slide{
+    min-width:100%;
+    display:flex;
+    justify-content:center;
 }
 
-.slide img {
-    width: auto;      /* tamaño real */
-    height: auto;     /* tamaño real */
-    max-width: 100%;  /* evita desbordar horizontalmente */
-    max-height: 450px; /* límite recomendado para no romper tu diseño */
-    object-fit: contain;
-    background-color: transparent;
+.slide img{
+    width:auto;
+    height:auto;
+    max-width:100%;
+    max-height:450px;
+    object-fit:contain;
+    background-color:transparent;
 }
 
-/* BOTONES */
-.slider button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.7);
-    border: none;
-    padding: 10px 14px;
-    font-size: 22px;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: 0.2s;
+/* -----------------------------------------
+   BOTONES SLIDER
+------------------------------------------ */
+.slider button{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    background:rgba(255,255,255,0.7);
+    border:none;
+    padding:10px 14px;
+    font-size:22px;
+    cursor:pointer;
+    border-radius:6px;
+    transition:0.2s;
 }
 
-.slider button:hover {
-    background: rgba(255, 255, 255, 0.9);
+.slider button:hover{
+    background:rgba(255,255,255,0.9);
 }
 
-button.prev { left: 10px; }
-button.next { right: 10px; }
+button.prev{ left:10px; }
+button.next{ right:10px; }
+
+/* -----------------------------------------
+   LOGO ECOEMPLEO
+------------------------------------------ */
+.logo-eco{
+    width:250px;
+    height:auto;
+    display:block;
+    margin:0 auto 10px auto;
+}
